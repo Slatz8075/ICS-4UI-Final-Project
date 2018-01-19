@@ -135,15 +135,15 @@ public class MainGame implements Screen{
     // the main game loop for this screen
     @Override
     public void render(float deltaTime) {
+        // update the player
         player.update(deltaTime);
-        /*
+        /**
         //THIS NEEDS MODIFICATION
         // check for collisions and fix them
         for(Rectangle block: world.getBlocks()){
             player.fixCollision(block);
         }
         */
-        
        
         // clears the screen in a black colour
         Gdx.gl.glClearColor(0, 0, 0, 1);
