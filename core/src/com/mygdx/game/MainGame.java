@@ -25,7 +25,7 @@ public class MainGame implements Screen{
     //create a puzzle game to display/ switch screens
     private PuzzleGame gameManager;
     // our game needs a hero
-    //private Player player;
+    private Player player;
     //create a new map to store the screens
     private Map map;
     //create a variables for the dimentions of the map (dimentions in terms of # of screens)
@@ -86,7 +86,7 @@ public class MainGame implements Screen{
         startX = Integer.parseInt(scanner.nextLine());
         startY = Integer.parseInt(scanner.nextLine());
         //create a player at this current position on the screen
-        player = new Player(startX, startY, startX, startY, 0, 1);
+        player = new Player(startX, startY, currentScreenX, currentScreenY, 0, 1);
         //this is counting the columns of screens in the map[][] 
         for (int mapRow = mapHeight - 1; mapRow >= 0; mapRow--) {
             //System.out.println("map row" + mapRow);
@@ -137,9 +137,6 @@ public class MainGame implements Screen{
     public void render(float deltaTime) {
         player.update(deltaTime);
         /*
-        // update the player
-        player.update(deltaTime);
-        
         //THIS NEEDS MODIFICATION
         // check for collisions and fix them
         for(Rectangle block: world.getBlocks()){
