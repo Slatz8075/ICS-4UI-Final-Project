@@ -23,14 +23,12 @@ public class Map {
     public Map(int width, int height) {
         //create the map[][] to the desired dimensions
         screens = new MapScreen[height][width];
-        System.out.println("w: " + width + "  h: " + height);
         //initilize the shape renderer for the render method
         shapeRenderer = new ShapeRenderer();
     }
 
     //setter for the screen
     public void setScreen(int row, int col, MapScreen Screen) {
-        System.out.println("setting a screen: Row " + row + " col: " + col);
         //set the screen at the desired part in the map array
         screens[row][col] = Screen;
     }
