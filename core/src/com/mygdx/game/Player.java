@@ -23,8 +23,8 @@ public class Player {
     private float x;
     private float y;
     // player movement variables
-    private float dx;
-    private float dy;
+    private int dx;
+    private int dy;
 
     // the amount of time an animation has been running
     private float elapsed;
@@ -197,32 +197,9 @@ public class Player {
 
     public void fixCollision(Rectangle block) {
         // are they colliding?
-        if (bounds.overlaps(block)) {
-            // calculate how much the are overlaping
-            float width = Math.min(bounds.x + bounds.width, block.x + block.width) - Math.max(bounds.x, block.x);
-            float height = Math.min(bounds.y + bounds.height, block.y + block.height) - Math.max(bounds.y, block.y);
-            // seperate the axis by finding the least amount of collision
-            if (width < height) {
-                // on the left
-                if (this.x < block.x) {
-                    // move the player to the left
-                    this.x = this.x - width;
-                // on the right
-                } else {
-                    // move the player to the right
-                    this.x = this.x + width;
-                }
-            } else {
-                // under it
-                if (this.y < block.y) {
-                    // move the player down
-                    this.y = this.y - height;
-                // above it
-                } else {
-                    // move the player up
-                    this.y = this.y + height;
-                }
-            }
+        int x = (int) this.x;
+        int y = (int) this.y;
+        if(world.getTile(x+ dy,y +dy) == 1){
             // update the collision box to match the player
             bounds.setX(this.x);
             bounds.setY(this.y);
