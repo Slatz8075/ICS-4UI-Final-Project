@@ -85,7 +85,9 @@ public class MainGame implements Screen{
         startX = Integer.parseInt(scanner.nextLine());
         startY = Integer.parseInt(scanner.nextLine());
         //create a player at this current position on the screen
-        Player player = new Player(startX, startY, currentScreenX, currentScreenY, 0, 1);
+
+        player = new Player(startX, startY, currentScreenX, currentScreenY, 0, 1);
+
         //this is counting the columns of screens in the map[][] 
         for (int mapRow = mapHeight - 1; mapRow >= 0; mapRow--) {
             //System.out.println("map row" + mapRow);
@@ -137,7 +139,20 @@ public class MainGame implements Screen{
 
         // update the player
         player.update(deltaTime);
+
+        /**
+        //THIS NEEDS MODIFICATION
+        // check for collisions and fix them
+        for(Rectangle block: world.getBlocks()){
+            player.fixCollision(block);
+        }
+
+        */
+       
+
         
+
+
         // clears the screen in a black colour
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);

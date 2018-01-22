@@ -19,7 +19,6 @@ import com.badlogic.gdx.utils.Array;
  * @author slatz8075
  */
 public class Player {
-    //THIS IS FOR RYAN
     // player location variables
     private float x;
     private float y;
@@ -78,18 +77,18 @@ public class Player {
         // load in the texture atlast to start finding pictures
         this.atlas = new TextureAtlas("packed/player.atlas");
         // finding the standing picture and load it in
-        this.standR = atlas.findRegion("standR");
-        this.standD = atlas.findRegion("standD");
-        this.standU = atlas.findRegion("standU");
-        this.standL = atlas.findRegion("standL");
+        this.standR = atlas.findRegion("StandR");
+        this.standD = atlas.findRegion("StandD");
+        this.standU = atlas.findRegion("StandU");
+        this.standL = atlas.findRegion("StandL");
 
         // create a run animation by finding every picture named run
         // the atlas has an index from each picture to order them correctly
         // this was done by naming the pictures in a certain way (run_1, run_2, etc.)
-        runR = new Animation(1f / 10f, atlas.findRegions("runR"));
-        runL = new Animation(1f / 10f, atlas.findRegions("runL"));
-        runU = new Animation(1f / 10f, atlas.findRegions("runU"));
-        runD = new Animation(1f / 10f, atlas.findRegions("runD"));
+        runR = new Animation(1f / 10f, atlas.findRegions("RunR"));
+        runL = new Animation(1f / 10f, atlas.findRegions("RunL"));
+        runU = new Animation(1f / 10f, atlas.findRegions("RunU"));
+        runD = new Animation(1f / 10f, atlas.findRegions("RunD"));
 
         //Theses variables are created just in case something calls for the
         //players direction before the player moves, might be unnecessary
@@ -105,7 +104,7 @@ public class Player {
         this.distanceTraveledX = 0;
         this.distanceTraveledY = 0;
 
-        
+        this.world = new MapScreen(this.worldRow, this.worldColumn);
     }
     
     public float getX(){
@@ -120,14 +119,16 @@ public class Player {
     public void update(float deltaTime) {
         // movement
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            this.dx = 3;
+            this.dx = 20;
+            this.elapsed = this.elapsed + deltaTime;
             this.directionX = 2;
             if (!Gdx.input.isKeyPressed(Input.Keys.UP) 
                     || !Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
                 this.directionY = 0;
             }
         } else if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            this.dx = -3;
+            this.dx = -20;
+            this.elapsed = this.elapsed + deltaTime;
             this.directionX = 1;
             if (!Gdx.input.isKeyPressed(Input.Keys.UP) 
                     || !Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
@@ -135,16 +136,19 @@ public class Player {
             }
         } else {
             this.dx = 0;
+            this.elapsed = 1;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            this.dy = -3;
+            this.dy = 20;
+            this.elapsed = this.elapsed + deltaTime;
             this.directionY = 2;
             if (!Gdx.input.isKeyPressed(Input.Keys.RIGHT) 
                     || !Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
                 this.directionX = 0;
             }
         } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            this.dy = 3;
+            this.dy = -20;
+            this.elapsed = this.elapsed + deltaTime;
             this.directionY = 1;
             if (!Gdx.input.isKeyPressed(Input.Keys.RIGHT) 
                     || !Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
@@ -152,6 +156,7 @@ public class Player {
             }
         } else {
             this.dy = 0;
+            this.elapsed = 0;
         }/**
          *Replace getTileType with something else
         if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {

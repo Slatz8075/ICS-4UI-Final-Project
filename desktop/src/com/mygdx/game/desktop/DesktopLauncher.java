@@ -8,10 +8,10 @@ import com.mygdx.game.PuzzleGame;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
-            /**
-             * Texture Packer not important anymore
-             * TexturePacker.process("Raw", "Packed", "Player");
-             */
+            
+              //Texture Packer not important anymore
+              TexturePacker.process("Raw", "Packed", "Player");
+             
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		new LwjglApplication(new PuzzleGame(), config);
 	}
