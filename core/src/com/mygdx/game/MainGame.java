@@ -138,13 +138,15 @@ public class MainGame implements Screen{
 
         // update the player
         player.update(deltaTime);
-        /*
+      
+        /**
         //THIS NEEDS MODIFICATION
         // check for collisions and fix them
         for(Rectangle block: world.getBlocks()){
             player.fixCollision(block);
         }
         */
+
         // clears the screen in a black colour
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
