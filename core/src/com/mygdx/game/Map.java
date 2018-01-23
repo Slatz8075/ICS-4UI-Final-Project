@@ -21,6 +21,7 @@ public class Map {
 
     //initilizer for the map
     public Map(int width, int height) {
+        System.out.println("w:" + width + "    h:" + height);
         //create the map[][] to the desired dimensions
         screens = new MapScreen[height][width];
         //initilize the shape renderer for the render method

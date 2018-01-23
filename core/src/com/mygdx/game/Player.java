@@ -197,9 +197,7 @@ public class Player {
 
     public void fixCollision() {
         // are they colliding?
-        int x = (int) this.x;
-        int y = (int) this.y;
-        if(world.getScreen(worldRow, worldColumn).getTile(x+dy,y+dy) == 1){
+        if(world.getScreen(worldRow, worldColumn).getTile((int) this.x+dy,(int) this.y+dy) == 1){
             
             //bounds.setX(this.x-dx);
             //bounds.setY(this.y-dy);
