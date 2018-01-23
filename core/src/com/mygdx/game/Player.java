@@ -58,7 +58,7 @@ public class Player {
     //Instance variables for which tile the player is on
     private int worldRow;
     private int worldColumn;
-    private MapScreen world;
+    private Map world;
 
 
     // constructor - we need to know where the player starts
@@ -104,7 +104,7 @@ public class Player {
         this.distanceTraveledX = 0;
         this.distanceTraveledY = 0;
 
-        this.world = new MapScreen(this.worldRow, this.worldColumn);
+        this.world = new Map(this.worldRow, this.worldColumn);
     }
     
     public float getX(){
@@ -169,41 +169,44 @@ public class Player {
         }
         */
 
-        // tel, the screen to mve to the next one and update the players position
-        if(this.x == (this.world.getWidth())*1000){
-            this.worldRow++;
-            // bring the player to the other edge of the screen
-            this.x = 100;
-        }
-        if(this.x == 0){
-            this.worldRow--;
-            // bring the player to the other edge of the screen
-            this.x = (this.world.getWidth())*1000-100;
-        }
-        if(this.y == (this.world.getHeight())*1000){
-            this.worldColumn++;
-            // bring the player to the other edge of the screen
-            this.x = 100;
-        }
-        if(this.y == 0){
-            this.worldColumn--;
-            // bring the player to the other edge of the screen
-            this.x = (this.world.getHeight())*1000-100;
-        }
-
-        this.x = this.x + this.dx;
-        this.y = this.y + this.dy;
+//        // tel, the screen to mve to the next one and update the players position
+//        if(this.x == (this.world.getScreen(worldRow, worldColumn).getWidth()*1000)){
+//            this.worldRow++;
+//            // bring the player to the other edge of the screen
+//            this.x = 100;
+//        }
+//        if(this.x == 0){
+//            this.worldRow--;
+//            // bring the player to the other edge of the screen
+//            this.x = (this.world.getScreen(worldRow, worldColumn).getWidth()*1000);
+//        }
+//        if(this.y == (this.world.getScreen(worldRow, worldColumn).getHeight()*1000)){
+//            this.worldColumn++;
+//            // bring the player to the other edge of the screen
+//            this.y = 100;
+//        }
+//        if(this.y == 0){
+//            this.worldColumn--;
+//            // bring the player to the other edge of the screen
+//            this.y = (this.world.getScreen(worldRow, worldColumn).getHeight()*1000);
+//        }
+//
+//        this.x = this.x + this.dx;
+//        this.y = this.y + this.dy;
     }
 
-    public void fixCollision(Rectangle block) {
+    public void fixCollision() {
         // are they colliding?
         int x = (int) this.x;
         int y = (int) this.y;
-        if(world.getTile(x+ dy,y +dy) == 1){
-            // update the collision box to match the player
-            bounds.setX(this.x);
-            bounds.setY(this.y);
+        if(world.getScreen(worldRow, worldColumn).getTile(x+dy,y+dy) == 1){
+            
+            //bounds.setX(this.x-dx);
+            //bounds.setY(this.y-dy);
         }
+            // update the collision box to match the player
+            bounds.setX(this.x+dx);
+            bounds.setY(this.y+dy);
     }
 
     public void render(SpriteBatch batch){
@@ -251,11 +254,6 @@ public class Player {
     public void setWorldCol(int col) {
         this.worldColumn = col;
     }
-
-    public void setScreen(MapScreen places) {
-        this.world = places;
-    }
-
     public float getPlayerX() {
         return this.x;
     }
