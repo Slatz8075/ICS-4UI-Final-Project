@@ -58,7 +58,7 @@ public class Player {
     //Instance variables for which tile the player is on
     private int worldRow;
     private int worldColumn;
-    private MapScreen world;
+    private Map world;
 
 
     // constructor - we need to know where the player starts
@@ -104,7 +104,7 @@ public class Player {
         this.distanceTraveledX = 0;
         this.distanceTraveledY = 0;
 
-        this.world = new MapScreen(this.worldRow, this.worldColumn);
+        this.world = new Map(this.worldRow, this.worldColumn);
     }
     
     public float getX(){
@@ -173,7 +173,7 @@ public class Player {
         */
 
         // tel, the screen to mve to the next one and update the players position
-        if(this.x == (this.world.getWidth())*1000){
+        if(this.x == (this.world.getScreen(worldRow,worldColumn).getWidth())*1000){
             this.worldRow++;
             // bring the player to the other edge of the screen
             this.x = 100;
@@ -181,9 +181,9 @@ public class Player {
         if(this.x == 0){
             this.worldRow--;
             // bring the player to the other edge of the screen
-            this.x = (this.world.getWidth())*1000-100;
+            this.x = (this.world.getScreen(worldRow,worldColumn).getWidth())*1000-100;
         }
-        if(this.y == (this.world.getHeight())*1000){
+        if(this.y == (this.world.getScreen(worldRow,worldColumn).getHeight())*1000){
             this.worldColumn++;
             // bring the player to the other edge of the screen
             this.x = 100;
@@ -191,7 +191,7 @@ public class Player {
         if(this.y == 0){
             this.worldColumn--;
             // bring the player to the other edge of the screen
-            this.x = (this.world.getHeight())*1000-100;
+            this.x = (this.world.getScreen(worldRow,worldColumn).getHeight())*1000-100;
         }
 
         this.x = this.x + this.dx;
@@ -200,35 +200,9 @@ public class Player {
 
     public void fixCollision(Rectangle block) {
         // are they colliding?
-        if (bounds.overlaps(block)) {
-            // calculate how much the are overlaping
-            float width = Math.min(bounds.x + bounds.width, block.x + block.width) - Math.max(bounds.x, block.x);
-            float height = Math.min(bounds.y + bounds.height, block.y + block.height) - Math.max(bounds.y, block.y);
-            // seperate the axis by finding the least amount of collision
-            if (width < height) {
-                // on the left
-                if (this.x < block.x) {
-                    // move the player to the left
-                    this.x = this.x - width;
-                // on the right
-                } else {
-                    // move the player to the right
-                    this.x = this.x + width;
-                }
-            } else {
-                // under it
-                if (this.y < block.y) {
-                    // move the player down
-                    this.y = this.y - height;
-                // above it
-                } else {
-                    // move the player up
-                    this.y = this.y + height;
-                }
-            }
-            // update the collision box to match the player
-            bounds.setX(this.x);
-            bounds.setY(this.y);
+        if(world.getScreen(worldRow,worldColumn).getTile((int)this.x + (int)this.dx, (int)this.y + (int)this.dy)== 1){
+            this.x = this.x - this.dx;
+            this.y = this.y - this.dy;
         }
     }
 
@@ -276,10 +250,6 @@ public class Player {
 
     public void setWorldCol(int col) {
         this.worldColumn = col;
-    }
-
-    public void setScreen(MapScreen places) {
-        this.world = places;
     }
 
     public float getPlayerX() {
