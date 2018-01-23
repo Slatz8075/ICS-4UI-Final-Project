@@ -4,6 +4,7 @@
  */
 package com.mygdx.game;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
@@ -59,11 +60,14 @@ public class Map {
                     //Ex: ScreenCol * 1000 scales up the array by 1000
                     //since 1000 to 1 is the ratio of pixcel to block, blocks should be 1000, 1000
                     shapeRenderer.rect(ScreenColumn * 1000, ScreenRow * 1000, 1000, 1000);
-                    //now generate the block texture
-                    
-                }else if(CurrentScreen.getTile(ScreenColumn, ScreenRow) == 0){
-                    //now we know it is not a block
-                    //all we need to do is generate the texture
+                    //now check if this block is an intilization tile
+                }else if(CurrentScreen.getTile(ScreenColumn, ScreenRow) == 2){
+                    //change the colour of the shape renderer for the drawing of the puzzle tile
+                    shapeRenderer.setColor(Color.RED);
+                    //generate a red block
+                    shapeRenderer.rect(ScreenColumn * 1000, ScreenRow * 1000, 1000, 1000);
+                    //... and change it back so everything is not always red (as wonderful as that would be)
+                    shapeRenderer.setColor(Color.WHITE);
                 }
             }
         }
