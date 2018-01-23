@@ -62,7 +62,7 @@ public class Player {
 
 
     //the player starts with its x and y, its screen position, its direction, and the map 
-    public Player(float x, float y, int screenRow, int screenColumn, int DirX, int DirY, Map map) {
+    public Player(float x, float y, int screenColumn, int screenRow, int DirX, int DirY, Map map) {
         // sets the income position
         this.x = x;
         this.y = y;
@@ -97,8 +97,10 @@ public class Player {
         this.bounds = new Rectangle(x, y, standR.getRegionWidth(), standR.getRegionHeight());
         
         //store the screen row and column
-        this.currentScreenRow = screenRow;
-        this.currentScreenColumn = screenColumn;
+        this.currentScreenRow = screenRow - 1;
+        this.currentScreenColumn = screenColumn - 1;
+        System.out.println("Player starting row: " + currentScreenRow);
+        System.out.println("Player starting column: " + currentScreenColumn);
         //store the map 
         this.map = map;
     }
@@ -153,7 +155,8 @@ public class Player {
         } else {
             this.dy = 0;
             this.elapsed = 0;
-        }/**
+        }
+        /*
          *Replace getTileType with something else
         if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
             String test = this.world.getTileType();
@@ -164,33 +167,35 @@ public class Player {
             }
         }
         */
-
-        //CHANGING OF SCREENS LOGIC
+        //CHANGING OF SCREENS LOGIC (this part done by zac)
         // check if the player's x is at the edge of the screen
-        if(this.x == (this.map.getScreen(currentScreenRow, currentScreenColumn).getWidth()*1000)){
+        if(this.x > (this.map.getScreen(currentScreenRow, currentScreenColumn).getWidth()*1000)){
             //therefore the player's current screen column needs to be modified
-            this.currentScreenRow--;
+            this.currentScreenColumn--;
             //set the players position to be at the left, since it exited stage right
             this.x = 1;
             //now check to see if the palyer is exiting left
-        }else if(this.x == 0){
+        }else if(this.x < 0){
             //add one to the screen column
-            this.currentScreenRow++;
+            this.currentScreenColumn++;
             // bring the player to the other edge of the screen (minus 1 so that it is not teleported back instantly)
             this.x = (this.map.getScreen(currentScreenRow, currentScreenColumn).getWidth()*1000-1);
             //check if the player is at the bottom of the screen
-        } else if(this.y == 0){
+        } else if(this.y < 0){
             //move down a screen
-            this.currentScreenColumn--;
+            this.currentScreenRow--;
             // bring the player to the other edge of the screen
             this.y = (map.getScreen(currentScreenRow, currentScreenColumn).getHeight()*1000-1);
             //now check if the player is at the top of the screen
-        } else if(this.y == (this.map.getScreen(currentScreenRow, currentScreenColumn).getHeight()*1000)){
+        } else if(this.y > (this.map.getScreen(currentScreenRow, currentScreenColumn).getHeight()*1000)){
             //modifiy the screen row
-            this.currentScreenColumn++;
+            this.currentScreenRow++;
             // bring the player to the other edge of the screen
             this.y = 0;
         }
+        
+        System.out.println("Player X: " + this.x);
+        System.out.println("Player Y: " + this.y);
 
         this.x = this.x + this.dx;
         this.y = this.y + this.dy;
@@ -298,10 +303,12 @@ public class Player {
 
     //these getters and setters are needed for the map redering so we know which screen to display
     public int getScreenCol() {
+        System.out.println("Screen Column: " + currentScreenColumn);
         return this.currentScreenColumn;
     }
 
     public int getScreenRow() {
+        System.out.println("Screen Row: " + currentScreenRow);
         return this.currentScreenRow;
     }
 
