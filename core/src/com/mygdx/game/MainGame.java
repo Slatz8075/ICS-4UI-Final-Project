@@ -160,10 +160,6 @@ public class MainGame implements Screen{
         // render the map at our current screen
         map.render(camera, currentScreenX, currentScreenY);
         
-        if(player.getX() > 200){
-            camera.position.x = player.getX();
-        }
-
         camera.update();
         batch.setProjectionMatrix(camera.combined);
         // ask the SpriteBatch to start taking notes of what to draw

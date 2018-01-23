@@ -119,7 +119,7 @@ public class Player {
     public void update(float deltaTime) {
         // movement
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            this.dx = 20;
+            this.dx = 50;
             this.elapsed = this.elapsed + deltaTime;
             this.directionX = 2;
             if (!Gdx.input.isKeyPressed(Input.Keys.UP) 
@@ -127,7 +127,7 @@ public class Player {
                 this.directionY = 0;
             }
         } else if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            this.dx = -20;
+            this.dx = -50;
             this.elapsed = this.elapsed + deltaTime;
             this.directionX = 1;
             if (!Gdx.input.isKeyPressed(Input.Keys.UP) 
@@ -139,7 +139,7 @@ public class Player {
             this.elapsed = 1;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            this.dy = 20;
+            this.dy = 50;
             this.elapsed = this.elapsed + deltaTime;
             this.directionY = 2;
             if (!Gdx.input.isKeyPressed(Input.Keys.RIGHT) 
@@ -147,7 +147,7 @@ public class Player {
                 this.directionX = 0;
             }
         } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            this.dy = -20;
+            this.dy = -50;
             this.elapsed = this.elapsed + deltaTime;
             this.directionY = 1;
             if (!Gdx.input.isKeyPressed(Input.Keys.RIGHT) 
@@ -211,35 +211,35 @@ public class Player {
 
     public void render(SpriteBatch batch){
         //Check if the player is standing
-        if (this.dx == 0){
+        if (this.dx == 0 && this.dy == 0){
             //Determine which direction the player is standing
             //If the player is facing left
             if(directionX == 1){
-                batch.draw(standL, x, y);
+                batch.draw(standL, x, y, 1000, 1000);
             //If the player is facing Right
             }else if(directionX == 2){
-                batch.draw(standR, x, y);
+                batch.draw(standR, x, y, 1000, 1000);
             //If the player is facing up
             }else if(directionY == 2){
-                batch.draw(standU, x, y);
+                batch.draw(standU, x, y, 1000, 1000);
             //If the player is facing down
             }else{
-                batch.draw(standD, x, y);
+                batch.draw(standD, x, y, 1000, 1000);
             }
         //If the player is moving, one of the four animations play, even if
         //they're moving diagonally
         //If the player is moving to the right
         }else if(this.dx > 0){
-            batch.draw(runR.getKeyFrame(elapsed, true), x, y);
+            batch.draw(runR.getKeyFrame(elapsed, true), x, y, 1000, 1000);
         //If the player is moving to the left
         }else if(this.dx < 0){
-            batch.draw(runL.getKeyFrame(elapsed, true), x, y);
+            batch.draw(runL.getKeyFrame(elapsed, true), x, y, 1000, 1000);
         //If the player is moving upwards
-        }else if(this.dy < 0){
-            batch.draw(runU.getKeyFrame(elapsed, true), x, y);
-        //If the player is moving downwards
         }else if(this.dy > 0){
-            batch.draw(runD.getKeyFrame(elapsed, true), x, y);
+            batch.draw(runU.getKeyFrame(elapsed, true), x, y, 1000, 1000);
+        //If the player is moving downwards
+        }else if(this.dy < 0){
+            batch.draw(runD.getKeyFrame(elapsed, true), x, y, 1000, 1000);
         }
     }
     
