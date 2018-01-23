@@ -169,30 +169,30 @@ public class Player {
         }
         */
 
-//        // tel, the screen to mve to the next one and update the players position
-//        if(this.x == (this.world.getScreen(worldRow, worldColumn).getWidth()*1000)){
-//            this.worldRow++;
-//            // bring the player to the other edge of the screen
-//            this.x = 100;
-//        }
-//        if(this.x == 0){
-//            this.worldRow--;
-//            // bring the player to the other edge of the screen
-//            this.x = (this.world.getScreen(worldRow, worldColumn).getWidth()*1000);
-//        }
-//        if(this.y == (this.world.getScreen(worldRow, worldColumn).getHeight()*1000)){
-//            this.worldColumn++;
-//            // bring the player to the other edge of the screen
-//            this.y = 100;
-//        }
-//        if(this.y == 0){
-//            this.worldColumn--;
-//            // bring the player to the other edge of the screen
-//            this.y = (this.world.getScreen(worldRow, worldColumn).getHeight()*1000);
-//        }
-//
-//        this.x = this.x + this.dx;
-//        this.y = this.y + this.dy;
+        // tel, the screen to mve to the next one and update the players position
+        if(this.x == (this.world.getScreen(worldRow, worldColumn).getWidth()*1000)){
+            this.worldRow++;
+            // bring the player to the other edge of the screen
+            this.x = 100;
+        }
+        if(this.x == 0){
+            this.worldRow--;
+            // bring the player to the other edge of the screen
+            this.x = (this.world.getScreen(worldRow, worldColumn).getWidth()*1000);
+        }
+        if(this.y == (this.world.getScreen(worldRow, worldColumn).getHeight()*1000)){
+            this.worldColumn++;
+            // bring the player to the other edge of the screen
+            this.y = 100;
+        }
+        if(this.y == 0){
+            this.worldColumn--;
+            // bring the player to the other edge of the screen
+            this.y = (this.world.getScreen(worldRow, worldColumn).getHeight()*1000);
+        }
+
+        this.x = this.x + this.dx;
+        this.y = this.y + this.dy;
     }
 
     public void fixCollision() {
@@ -205,8 +205,8 @@ public class Player {
             //bounds.setY(this.y-dy);
         }
             // update the collision box to match the player
-            bounds.setX(this.x+dx);
-            bounds.setY(this.y+dy);
+            //bounds.setX(this.x+dx);
+           // bounds.setY(this.y+dy);
     }
 
     public void render(SpriteBatch batch){
