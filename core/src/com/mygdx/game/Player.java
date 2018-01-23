@@ -96,7 +96,7 @@ public class Player {
         this.directionY = DirY;
         // my collision rectangle is at the x,y value passed in
         // it has the width and height of the standing picture
-        this.bounds = new Rectangle(x, y, standR.getRegionWidth(), standR.getRegionHeight());
+        //this.bounds = new Rectangle(x, y, standR.getRegionWidth(), standR.getRegionHeight());
         //Enter in the starting tile
         this.worldRow = row;
         this.worldColumn = col;
