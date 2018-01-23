@@ -134,11 +134,11 @@ public class Player {
                     || !Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
                 this.directionY = 0;
             }
-        } else {
+        } else if(!Gdx.input.isKeyPressed(Input.Keys.RIGHT) 
+                && !Gdx.input.isKeyPressed(Input.Keys.LEFT)){
             this.dx = 0;
-            this.elapsed = 1;
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+        else if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
             this.dy = 50;
             this.elapsed = this.elapsed + deltaTime;
             this.directionY = 2;
@@ -154,10 +154,13 @@ public class Player {
                     || !Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
                 this.directionX = 0;
             }
-        } else {
+        } else if(!Gdx.input.isKeyPressed(Input.Keys.UP)
+                && !Gdx.input.isKeyPressed(Input.Keys.DOWN)){
             this.dy = 0;
+        }else{
             this.elapsed = 0;
-        }/**
+        }
+        /**
          *Replace getTileType with something else
         if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
             String test = this.world.getTileType();
@@ -229,6 +232,7 @@ public class Player {
         //If the player is moving to the right
         }else if(this.dx > 0){
             batch.draw(runR.getKeyFrame(elapsed, true), x, y, 1000, 1000);
+            System.out.println(elapsed);
         //If the player is moving to the left
         }else if(this.dx < 0){
             batch.draw(runL.getKeyFrame(elapsed, true), x, y, 1000, 1000);
