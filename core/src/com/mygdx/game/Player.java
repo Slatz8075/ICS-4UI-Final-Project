@@ -87,6 +87,7 @@ public class Player {
         //players direction before the player moves, might be unnecessary
         this.directionX = DirX;
         this.directionY = DirY;
+      
         //???, What is this used for, or is it unfinished
         this.distanceTraveledX = 0;
         this.distanceTraveledY = 0;
@@ -112,6 +113,91 @@ public class Player {
     }
 
     public void update(float deltaTime) {
+        // movement
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            this.dx = 50;
+            this.elapsed = this.elapsed + deltaTime;
+            this.directionX = 2;
+            if (!Gdx.input.isKeyPressed(Input.Keys.UP) 
+                    || !Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+                this.directionY = 0;
+            }
+        } else if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+            this.dx = -50;
+            this.elapsed = this.elapsed + deltaTime;
+            this.directionX = 1;
+            if (!Gdx.input.isKeyPressed(Input.Keys.UP) 
+                    || !Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+                this.directionY = 0;
+            }
+        } else if(!Gdx.input.isKeyPressed(Input.Keys.RIGHT) 
+                && !Gdx.input.isKeyPressed(Input.Keys.LEFT)){
+            this.dx = 0;
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+            this.dy = 50;
+            this.elapsed = this.elapsed + deltaTime;
+            this.directionY = 2;
+            if (!Gdx.input.isKeyPressed(Input.Keys.RIGHT) 
+                    || !Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+                this.directionX = 0;
+            }
+        } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+            this.dy = -50;
+            this.elapsed = this.elapsed + deltaTime;
+            this.directionY = 1;
+            if (!Gdx.input.isKeyPressed(Input.Keys.RIGHT) 
+                    || !Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+                this.directionX = 0;
+            }
+        } else if(!Gdx.input.isKeyPressed(Input.Keys.UP)
+                && !Gdx.input.isKeyPressed(Input.Keys.DOWN)){
+            this.dy = 0;
+        }else{
+            this.elapsed = 0;
+        }
+
+        /**
+         *Replace getTileType with something else
+        if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
+            String test = this.world.getTileType();
+            if (test.equals("Puzzle")) {
+                puzzleInteract(this.world.getTile);
+            } else if (test.equals("Door")) {
+                doorInteract(this.world.getTile);
+            }
+        }
+        */
+      
+        //CHANGING OF SCREENS LOGIC (this part done by zac)
+        // check if the player's x is at the edge of the screen
+        if(this.x > (this.map.getScreen(currentScreenRow, currentScreenColumn).getWidth()*1000)){
+            //therefore the player's current screen column needs to be modified
+            this.currentScreenColumn--;
+            //set the players position to be at the left, since it exited stage right
+            this.x = 1;
+            //now check to see if the palyer is exiting left
+        }else if(this.x < 0){
+            //add one to the screen column
+            this.currentScreenColumn++;
+            // bring the player to the other edge of the screen (minus 1 so that it is not teleported back instantly)
+            this.x = (this.map.getScreen(currentScreenRow, currentScreenColumn).getWidth()*1000-1);
+            //check if the player is at the bottom of the screen
+        } else if(this.y < 0){
+            //move down a screen
+            this.currentScreenRow--;
+            // bring the player to the other edge of the screen
+            this.y = (map.getScreen(currentScreenRow, currentScreenColumn).getHeight()*1000-1);
+            //now check if the player is at the top of the screen
+        } else if(this.y > (this.map.getScreen(currentScreenRow, currentScreenColumn).getHeight()*1000)){
+            //modifiy the screen row
+            this.currentScreenRow++;
+            // bring the player to the other edge of the screen
+            this.y = 0;
+        }
+        
+        System.out.println("Player X: " + this.x);
+        System.out.println("Player Y: " + this.y);
 
         //CHECK IF THE PLAYER IS CLICKING THE INTILIZE BUTTON
         if (Gdx.input.isKeyPressed(Input.Keys.A) && (int)(x/1000) = ) {
@@ -241,35 +327,35 @@ public class Player {
      */
     public void render(SpriteBatch batch) {
         //Check if the player is standing
-        if (this.dx == 0) {
+        if (this.dx == 0 && this.dy == 0){
             //Determine which direction the player is standing
             //If the player is facing left
-            if (directionX == 1) {
-                batch.draw(standL, x, y);
-                //If the player is facing Right
-            } else if (directionX == 2) {
-                batch.draw(standR, x, y);
-                //If the player is facing up
-            } else if (directionY == 2) {
-                batch.draw(standU, x, y);
-                //If the player is facing down
-            } else {
-                batch.draw(standD, x, y);
+            if(directionX == 1){
+                batch.draw(standL, x, y, 1000, 1000);
+            //If the player is facing Right
+            }else if(directionX == 2){
+                batch.draw(standR, x, y, 1000, 1000);
+            //If the player is facing up
+            }else if(directionY == 2){
+                batch.draw(standU, x, y, 1000, 1000);
+            //If the player is facing down
+            }else{
+                batch.draw(standD, x, y, 1000, 1000);
             }
-            //If the player is moving, one of the four animations play, even if
-            //they're moving diagonally
-            //If the player is moving to the right
-        } else if (this.dx > 0) {
-            batch.draw(runR.getKeyFrame(elapsed, true), x, y);
-            //If the player is moving to the left
-        } else if (this.dx < 0) {
-            batch.draw(runL.getKeyFrame(elapsed, true), x, y);
-            //If the player is moving upwards
-        } else if (this.dy < 0) {
-            batch.draw(runU.getKeyFrame(elapsed, true), x, y);
-            //If the player is moving downwards
-        } else if (this.dy > 0) {
-            batch.draw(runD.getKeyFrame(elapsed, true), x, y);
+        //If the player is moving, one of the four animations play, even if
+        //they're moving diagonally
+        //If the player is moving to the right
+        }else if(this.dx > 0){
+            batch.draw(runR.getKeyFrame(elapsed, true), x, y, 1000, 1000);
+        //If the player is moving to the left
+        }else if(this.dx < 0){
+            batch.draw(runL.getKeyFrame(elapsed, true), x, y, 1000, 1000);
+        //If the player is moving upwards
+        }else if(this.dy > 0){
+            batch.draw(runU.getKeyFrame(elapsed, true), x, y, 1000, 1000);
+        //If the player is moving downwards
+        }else if(this.dy < 0){
+            batch.draw(runD.getKeyFrame(elapsed, true), x, y, 1000, 1000);
         }
     }
 

@@ -47,13 +47,16 @@ public class MainGame implements Screen {
     //variables for storing the startying position that the player is at
     int startX;
     int startY;
+    //width and height of the puzzles array
+    int puzzleWidth;
+    int puzzleHeight;
     //starting variables for the puzzle blocks
     int PieceOneX;
     int PieceOneY;
     int PieceTwoX;
     int PieceTwoY;
     //create a spare map screen for the puzzle
-    MapScreen PuzzleScreen;
+    private Map puzzlez;
 
     /**
      * @param args the command line arguments
@@ -84,6 +87,7 @@ public class MainGame implements Screen {
         mapHeight = Integer.parseInt(scanner.nextLine());
         //create a map of these dimentions
         map = new Map(mapWidth, mapHeight);
+        
         //take in the variables for width and height of screens
         ScreenTileWidth = Integer.parseInt(scanner.nextLine());
         ScreenTileHeight = Integer.parseInt(scanner.nextLine());
@@ -93,6 +97,11 @@ public class MainGame implements Screen {
         //take in the position of the player (XY position wise on the screen)
         startX = Integer.parseInt(scanner.nextLine());
         startY = Integer.parseInt(scanner.nextLine());
+        //store the width and height of the puzzles
+        puzzleWidth = Integer.parseInt(scanner.nextLine());
+        puzzleHeight = Integer.parseInt(scanner.nextLine());
+        //puzzle create the puzzle array of the desired dimentions
+        puzzlez = new Map(puzzleWidth, puzzleHeight);
         //store the puzzle pieces's x's and y's
         PieceOneX = Integer.parseInt(scanner.nextLine());
         PieceOneY = Integer.parseInt(scanner.nextLine());
@@ -106,7 +115,6 @@ public class MainGame implements Screen {
         for (int mapRow = mapHeight - 1; mapRow >= 0; mapRow--) {
             //this is counting the number of column spots for the screens in the map[][]
             for (int mapCol = mapWidth - 1; mapCol >= 0; mapCol--) {
-                //NOTE: the reason why I don't have -1 for the map width is because we need an extra screen for the puzzle
                 //we are now at a new screen, so initilize it
                 MapScreen screen = new MapScreen(ScreenTileWidth, ScreenTileHeight);
                 //this is counting the number of rows in the map[][]for this row for this scecific screen
@@ -127,21 +135,33 @@ public class MainGame implements Screen {
                 scanner.nextLine();
             }
         }
-        //scan in the puzzle map
-        MapScreen screen = new MapScreen(ScreenTileWidth, ScreenTileHeight);
-        //this is counting the number of rows in the map[][]for this row for this scecific screen
-        for (int screenRow = ScreenTileHeight - 1; screenRow >= 0; screenRow--) {
-            //scan in this whole line as a string
-            String Line = scanner.nextLine();
-            //this is counting the number of columns in the map[][]for this row for this specific screen
-            for (int screenCol = ScreenTileWidth - 1; screenCol >= 0; screenCol--) {
-                //set the position in the [][] equal to screenCol's #
-                char tile = Line.charAt(screenCol);
-                screen.setTile(screenRow, screenCol, Integer.parseInt("" + tile));
+        /*
+        //this part goes through the puzzle screen
+        for (int mapRow = puzzleHeight - 1; mapRow >= 0; mapRow--) {
+            //this is counting the number of column spots for the screens in the map[][]
+            for (int mapCol = puzzleWidth - 1; mapCol >= 0; mapCol--) {
+                //scan in the puzzle map
+                MapScreen screen = new MapScreen(ScreenTileWidth, ScreenTileHeight);
+                System.out.println("this works " + mapRow);
+                //this is counting the number of rows in the map[][]for this row for this scecific screen
+                for (int screenRow = ScreenTileHeight - 1; screenRow >= 0; screenRow--) {
+                    //scan in this whole line as a string
+                    String Line = scanner.nextLine();
+                    //this is counting the number of columns in the map[][]for this row for this specific screen
+                    for (int screenCol = ScreenTileWidth - 1; screenCol >= 0; screenCol--) {
+                        //set the position in the [][] equal to screenCol's #
+                        char tile = Line.charAt(screenCol);
+                        screen.setTile(screenRow, screenCol, Integer.parseInt("" + tile));
+                    }
+                }
+                //Set the puzzle screen in the puzzlez[][]
+                puzzlez.setScreen(mapRow, mapCol, screen);
+                //move to the next line
+                scanner.nextLine();
             }
         }
-        //Set the puzzle screen
-        PuzzleScreen = screen;
+        */
+        
         // initialize the spritebatch
         this.batch = puzzleGame.getBatch();
         //create the camera proportional to the mapScreen
@@ -169,19 +189,12 @@ public class MainGame implements Screen {
         // update the player
         player.update(deltaTime);
 
-        /*
-         //THIS NEEDS MODIFICATION
-         // check for collisions and fix them
-         for(Rectangle block: world.getBlocks()){
-         player.fixCollision(block);
-         }
-         */
-
         // clears the screen in a black colour
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         //check if the puzzle mode is in motion
+        //if(){
 
 
         // render the map at our current screen
