@@ -25,7 +25,6 @@ public class Player {
     // player movement variables
     private float dx;
     private float dy;
-
     // the amount of time an animation has been running
     private float elapsed;
 
@@ -51,9 +50,6 @@ public class Player {
     //Right = 2, Left = 1, Up = 2, Down = 1, no direction = 0
     private int directionX;
     private int directionY;
-    //???
-    private int distanceTraveledX;
-    private int distanceTraveledY;
     //these integers store the row and column (screen wise)that the player is ocupying
     private int currentScreenRow;
     private int currentScreenColumn;
@@ -89,10 +85,7 @@ public class Player {
         //players direction before the player moves, might be unnecessary
         this.directionX = DirX;
         this.directionY = DirY;
-      
-        //???, What is this used for, or is it unfinished
-        this.distanceTraveledX = 0;
-        this.distanceTraveledY = 0;
+
         // my collision rectangle is at the x,y value passed in
         // it has the width and height of the standing picture
         this.bounds = new Rectangle(x, y, standR.getRegionWidth(), standR.getRegionHeight());
@@ -171,8 +164,8 @@ public class Player {
             }
         }
         */
-      
-        //CHANGING OF SCREENS LOGIC (this part done by zac)
+        
+        //CHANGING OF SCREENS LOGIC (this part repaired by zac made by ryan)
         // check if the player's x is at the edge of the screen
         if(this.x > (this.map.getScreen(currentScreenRow, currentScreenColumn).getWidth()*1000)){
             //therefore the player's current screen column needs to be modified
@@ -198,23 +191,47 @@ public class Player {
             // bring the player to the other edge of the screen
             this.y = 0;
         }
-        
-        System.out.println("Player X: " + this.x);
-        System.out.println("Player Y: " + this.y);
-
+        if((this.x>1&&this.x<1500)||(this.y>1&& this.y<1000)){
+        collision();
+        }
         this.x = this.x + this.dx;
         this.y = this.y + this.dy;
+        
+        
     }
 
-    /*
-    public void fixCollision(Rectangle block) {
+    
+    public void collision() {
         // are they colliding?
-        if(world.getScreen(worldRow,worldColumn).getTile((int)this.x + (int)this.dx, (int)this.y + (int)this.dy)== 1){
-            this.x = this.x - this.dx;
-            this.y = this.y - this.dy;
+        if(map.getScreen(this.currentScreenRow,this.currentScreenColumn)
+                .getTile(((int)this.x-100)/1000, ((int)this.y-100)/1000)== 1){
+            // if the x position needs to collide chage the position to off the tile
+            if(this.dx>0 ){
+                this.x = this.x - this.dx-45;
+            }
+            // if the y position needs to collide chage the position to off the tile
+            if(this.dy>0){
+                this.y = this.y - this.dy-45;
+            }
         }
+        if(map.getScreen(this.currentScreenRow,this.currentScreenColumn)
+                  .getTile(((int)this.x+1000)/1000, ((int)this.y+1000)/1000)== 1){
+            // if the x position needs to collide chage the position to off the tile
+            if(this.dx>0 ){
+                this.x = this.x - this.dx-100;
+            }else if(this.dx<0){
+                this.x = this.x - this.dx+100;
+            }
+            // if the y position needs to collide chage the position to off the tile
+            if(this.dy>0){
+                this.y = this.y - this.dy-100;
+            }else if(this.dy<0){
+                this.y = this.y - this.dy+100;
+            }
+        }
+        
     }
-    */
+    
 
     public void render(SpriteBatch batch){
         //Check if the player is standing
