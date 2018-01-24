@@ -34,7 +34,6 @@ public class Player {
     private Animation<TextureRegion> runL;
     private Animation<TextureRegion> runU;
     private Animation<TextureRegion> runD;
-    
     // pictures when standing still
     private TextureRegion standR;
     private TextureRegion standL;
@@ -55,25 +54,23 @@ public class Player {
     //???
     private int distanceTraveledX;
     private int distanceTraveledY;
-    //Instance variables for which tile the player is on
-    private int worldRow;
-    private int worldColumn;
-    private Map world;
+    //these integers store the row and column (screen wise)that the player is ocupying
+    private int currentScreenRow;
+    private int currentScreenColumn;
+    //create the map so that we can access the screens and this the tiles
+    private Map map;
 
 
-    // constructor - we need to know where the player starts
-    public Player(float x, float y, int row, int col, int DirX, int DirY) {
+    //the player starts with its x and y, its screen position, its direction, and the map 
+    public Player(float x, float y, int screenColumn, int screenRow, int DirX, int DirY, Map map) {
         // sets the income position
         this.x = x;
         this.y = y;
-
         // player starts standing still
         this.dx = 0;
         this.dy = 0;
-
         // no animation going on, so no time yet
         this.elapsed = 0;
-
         // load in the texture atlast to start finding pictures
         this.atlas = new TextureAtlas("packed/player.atlas");
         // finding the standing picture and load it in
@@ -81,7 +78,6 @@ public class Player {
         this.standD = atlas.findRegion("StandD");
         this.standU = atlas.findRegion("StandU");
         this.standL = atlas.findRegion("StandL");
-
         // create a run animation by finding every picture named run
         // the atlas has an index from each picture to order them correctly
         // this was done by naming the pictures in a certain way (run_1, run_2, etc.)
@@ -89,22 +85,25 @@ public class Player {
         runL = new Animation(1f / 10f, atlas.findRegions("RunL"));
         runU = new Animation(1f / 10f, atlas.findRegions("RunU"));
         runD = new Animation(1f / 10f, atlas.findRegions("RunD"));
-
         //Theses variables are created just in case something calls for the
         //players direction before the player moves, might be unnecessary
         this.directionX = DirX;
         this.directionY = DirY;
-        // my collision rectangle is at the x,y value passed in
-        // it has the width and height of the standing picture
-        //this.bounds = new Rectangle(x, y, standR.getRegionWidth(), standR.getRegionHeight());
-        //Enter in the starting tile
-        this.worldRow = row;
-        this.worldColumn = col;
+      
         //???, What is this used for, or is it unfinished
         this.distanceTraveledX = 0;
         this.distanceTraveledY = 0;
-
-        this.world = new Map(this.worldRow, this.worldColumn);
+        // my collision rectangle is at the x,y value passed in
+        // it has the width and height of the standing picture
+        this.bounds = new Rectangle(x, y, standR.getRegionWidth(), standR.getRegionHeight());
+        
+        //store the screen row and column
+        this.currentScreenRow = screenRow - 1;
+        this.currentScreenColumn = screenColumn - 1;
+        System.out.println("Player starting row: " + currentScreenRow);
+        System.out.println("Player starting column: " + currentScreenColumn);
+        //store the map 
+        this.map = map;
     }
     
     public float getX(){
@@ -160,6 +159,7 @@ public class Player {
         }else{
             this.elapsed = 0;
         }
+
         /**
          *Replace getTileType with something else
         if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
@@ -171,33 +171,42 @@ public class Player {
             }
         }
         */
-
-        // tel, the screen to mve to the next one and update the players position
-        if(this.x == (this.world.getScreen(worldRow,worldColumn).getWidth())*1000){
-            this.worldRow++;
+      
+        //CHANGING OF SCREENS LOGIC (this part done by zac)
+        // check if the player's x is at the edge of the screen
+        if(this.x > (this.map.getScreen(currentScreenRow, currentScreenColumn).getWidth()*1000)){
+            //therefore the player's current screen column needs to be modified
+            this.currentScreenColumn--;
+            //set the players position to be at the left, since it exited stage right
+            this.x = 1;
+            //now check to see if the palyer is exiting left
+        }else if(this.x < 0){
+            //add one to the screen column
+            this.currentScreenColumn++;
+            // bring the player to the other edge of the screen (minus 1 so that it is not teleported back instantly)
+            this.x = (this.map.getScreen(currentScreenRow, currentScreenColumn).getWidth()*1000-1);
+            //check if the player is at the bottom of the screen
+        } else if(this.y < 0){
+            //move down a screen
+            this.currentScreenRow--;
             // bring the player to the other edge of the screen
-            this.x = 100;
-        }
-        if(this.x == 0){
-            this.worldRow--;
+            this.y = (map.getScreen(currentScreenRow, currentScreenColumn).getHeight()*1000-1);
+            //now check if the player is at the top of the screen
+        } else if(this.y > (this.map.getScreen(currentScreenRow, currentScreenColumn).getHeight()*1000)){
+            //modifiy the screen row
+            this.currentScreenRow++;
             // bring the player to the other edge of the screen
-            this.x = (this.world.getScreen(worldRow,worldColumn).getWidth())*1000-100;
+            this.y = 0;
         }
-        if(this.y == (this.world.getScreen(worldRow,worldColumn).getHeight())*1000){
-            this.worldColumn++;
-            // bring the player to the other edge of the screen
-            this.x = 100;
-        }
-        if(this.y == 0){
-            this.worldColumn--;
-            // bring the player to the other edge of the screen
-            this.x = (this.world.getScreen(worldRow,worldColumn).getHeight())*1000-100;
-        }
+        
+        System.out.println("Player X: " + this.x);
+        System.out.println("Player Y: " + this.y);
 
         this.x = this.x + this.dx;
         this.y = this.y + this.dy;
     }
 
+    /*
     public void fixCollision(Rectangle block) {
         // are they colliding?
         if(world.getScreen(worldRow,worldColumn).getTile((int)this.x + (int)this.dx, (int)this.y + (int)this.dy)== 1){
@@ -205,6 +214,7 @@ public class Player {
             this.y = this.y - this.dy;
         }
     }
+    */
 
     public void render(SpriteBatch batch){
         //Check if the player is standing
@@ -244,6 +254,8 @@ public class Player {
     public void dispose(){
         atlas.dispose();
     }
+    
+    /*
     public void setWorldRow(int row) {
         this.worldRow = row;
     }
@@ -251,7 +263,9 @@ public class Player {
     public void setWorldCol(int col) {
         this.worldColumn = col;
     }
+    */
 
+    /*
     public float getPlayerX() {
         return this.x;
     }
@@ -259,13 +273,18 @@ public class Player {
     public float getPlayerY() {
         return this.y;
     }
+    */
 
-    public int getWorldCol() {
-        return this.worldColumn;
+
+    //these getters and setters are needed for the map redering so we know which screen to display
+    public int getScreenCol() {
+        System.out.println("Screen Column: " + currentScreenColumn);
+        return this.currentScreenColumn;
     }
 
-    public int getWorldRow() {
-        return this.worldRow;
+    public int getScreenRow() {
+        System.out.println("Screen Row: " + currentScreenRow);
+        return this.currentScreenRow;
     }
 
     public String getDiretion() {

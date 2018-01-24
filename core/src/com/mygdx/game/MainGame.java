@@ -41,8 +41,8 @@ public class MainGame implements Screen{
     private Viewport view;
     
     //variables for storing the screen that the player is at
-    int currentScreenX;
-    int currentScreenY;
+    int startScreenRow;
+    int startScreenColumn;
     //variables for storing the startying position that the player is at
     int startX;
     int startY;
@@ -62,6 +62,7 @@ public class MainGame implements Screen{
         try {
             // creating the file reader
             file = new FileReader("Initilization.txt");
+            System.out.println("here");
         } catch (Exception e) {
             //handle any errors
             e.printStackTrace();
@@ -79,21 +80,19 @@ public class MainGame implements Screen{
         ScreenTileWidth = Integer.parseInt(scanner.nextLine());
         ScreenTileHeight = Integer.parseInt(scanner.nextLine());
         //take in the starting position (screen wise) of the player
-        currentScreenX = Integer.parseInt(scanner.nextLine());
-        currentScreenY = Integer.parseInt(scanner.nextLine());
+        startScreenRow = Integer.parseInt(scanner.nextLine());
+        startScreenColumn = Integer.parseInt(scanner.nextLine());
         //take in the position of the player (XY position wise on the screen)
         startX = Integer.parseInt(scanner.nextLine());
         startY = Integer.parseInt(scanner.nextLine());
         //create a player at this current position on the screen
-
-        player = new Player(startX, startY, currentScreenX, currentScreenY, 0, 1);
+        //the format is the starting x, y, then the screen x and y, and finally the direction 0, 1
+        player = new Player(startX, startY, startScreenRow, startScreenColumn, 0, 1, map);
 
         //this is counting the columns of screens in the map[][] 
         for (int mapRow = mapHeight - 1; mapRow >= 0; mapRow--) {
-            //System.out.println("map row" + mapRow);
             //this is counting the number of column spots for the screens in the map[][]
             for (int mapCol = mapWidth - 1; mapCol >= 0; mapCol--) {
-                //System.out.println("mapCol" + mapCol);
                 //we are now at a new screen, so initilize it
                 MapScreen screen = new MapScreen(ScreenTileWidth, ScreenTileHeight);
                 //this is counting the number of rows in the map[][]for this row for this scecific screen
@@ -103,8 +102,8 @@ public class MainGame implements Screen{
                     //this is counting the number of columns in the map[][]for this row for this specific screen
                     for (int screenCol = ScreenTileWidth - 1; screenCol >= 0; screenCol--) {
                         //set the position in the [][] equal to screenCol's #
-                        char ex = Line.charAt(screenCol);
-                        screen.setTile(screenRow, screenCol, Integer.parseInt("" + ex));
+                        char tile = Line.charAt(screenCol);
+                        screen.setTile(screenRow, screenCol, Integer.parseInt("" + tile));
                     }
                 }
                 //now put this screen into the map[][]
@@ -139,26 +138,21 @@ public class MainGame implements Screen{
 
         // update the player
         player.update(deltaTime);
-
+      
         /**
         //THIS NEEDS MODIFICATION
         // check for collisions and fix them
         for(Rectangle block: world.getBlocks()){
             player.fixCollision(block);
         }
-
         */
-       
-
-        
-
 
         // clears the screen in a black colour
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         // render the map at our current screen
-        map.render(camera, currentScreenX, currentScreenY);
+        map.render(camera, player.getScreenCol(), player.getScreenRow());
         
         camera.update();
         batch.setProjectionMatrix(camera.combined);

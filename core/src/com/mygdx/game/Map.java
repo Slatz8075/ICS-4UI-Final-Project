@@ -13,7 +13,6 @@ import com.badlogic.gdx.math.Rectangle;
  * @author slatz8075
  */
 public class Map {
-
     //create a 2D array of screens 
     private MapScreen[][] screens;
     //create the shape renderer (this will be used to render our map)
@@ -23,14 +22,12 @@ public class Map {
     public Map(int width, int height) {
         //create the map[][] to the desired dimensions
         screens = new MapScreen[height][width];
-        System.out.println("w: " + width + "  h: " + height);
         //initilize the shape renderer for the render method
         shapeRenderer = new ShapeRenderer();
     }
 
     //setter for the screen
     public void setScreen(int row, int col, MapScreen Screen) {
-        System.out.println("setting a screen: Row " + row + " col: " + col);
         //set the screen at the desired part in the map array
         screens[row][col] = Screen;
     }
@@ -42,7 +39,7 @@ public class Map {
     }
 
     //for the render method pass in the camera, and the screen we are currently looking at
-    public void render(OrthographicCamera camera, int currentScreenX, int currentScreenY) {
+    public void render(OrthographicCamera camera, int currentScreenY, int currentScreenX) {
         //use the shape renderer at our position
         shapeRenderer.setProjectionMatrix(camera.combined);      
         //begin our shape rendering, saying that our shape type is filled
