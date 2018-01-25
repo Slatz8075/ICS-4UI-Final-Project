@@ -191,7 +191,7 @@ public class Player {
             // bring the player to the other edge of the screen
             this.y = 0;
         }
-        if((this.x>1&&this.x<1500)||(this.y>1&& this.y<1000)){
+        if((this.x>100&&this.x<15000)&&(this.y>100&& this.y<9000)){
         collision();
         }
         this.x = this.x + this.dx;
