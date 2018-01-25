@@ -207,11 +207,15 @@ public class Player {
                 .getTile(((int)this.x-100)/1000, ((int)this.y-100)/1000)== 1){
             // if the x position needs to collide chage the position to off the tile
             if(this.dx>0 ){
-                this.x = this.x - this.dx-45;
+                this.x = this.x - this.dx-100;
+            }else if(this.dx<0){
+                this.x = this.x - this.dx+100;
             }
             // if the y position needs to collide chage the position to off the tile
             if(this.dy>0){
-                this.y = this.y - this.dy-45;
+                this.y = this.y - this.dy-100;
+            }else if(this.dy<0){
+                this.y = this.y - this.dy+100;
             }
         }
         if(map.getScreen(this.currentScreenRow,this.currentScreenColumn)
